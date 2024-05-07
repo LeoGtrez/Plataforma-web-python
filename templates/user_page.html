@@ -1,0 +1,225 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Servicio de Streaming (admin)</title>
+    <!--Hoja de estilo local-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <!--Plantilla de bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/journal/bootstrap.min.css" integrity="sha384-QDSPDoVOoSWz2ypaRUidLmLYl4RyoBWI44iA5agn6jHegBxZkNqgm2eHb6yZ5bYs" crossorigin="anonymous">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Iconos de Font Awesome-->
+    <script src="https://kit.fontawesome.com/ec8a26d722.js" crossorigin="anonymous"></script>
+    <!--Javascript-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<div class="topnav"> <!--Div para la barra de navegación superior-->
+  <!--Links para cada sección-->
+  <a href="/peliculas1">Películas</a>
+  <a href="/series1">Series</a>
+  <a href="/vistas">Vistas</a>
+  <a href="/favoritas">Favoritas</a>
+  {% if admin==True %} <!--Si admin=True se muestra la sección de administrador-->
+     <a href="/admin">Administrador</a>
+  {% endif %}
+  <!--Buscador y botón para redirigir a la página de usuario-->
+  <div class="right-corner">
+  <div class="search-container">
+    <form action="/search" method="post">
+      <input type="text" placeholder="Search.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+  <div class="user-button">
+  <form action="/user_page" method="post">
+    <button type="submit"><i class="fa-solid fa-user-tie"></i></button>
+  </form>
+  </div>
+  </div>
+</div>
+
+<body>
+    <main class="container p-4">
+        <br><br>
+        <h1 class="display-6 text-left mt-4 titulo">Información del usuario</h1> <!--Título principal-->
+        <br>
+        <div class="row">
+            <div class="col-md-4 "> <!--Este div ocupará 4 columnas del espacio-->
+                <div class="card"> <!--Creacion del objeto card-->
+                    <div class="card-header">
+                            Nombre de usuario: <b>{{user.nombre}}</b> <!--Nombre de usuario-->
+                            <!--Password-->
+                            <p>Password:&nbsp; <input type="password" value="{{user.psswd}}" id="myInput" size="15">
+                            <button class="float-right button-eye" onclick="myFunction()"> <!--Botón para mostrar password-->
+                                <i class="fa-regular fa-eye"></i>
+                            </button></p>
+                            <!--Botón para mostrar contenido escondido-->
+                            <button type="button" class="collapsible">Cambiar contraseña &nbsp; <i class="fa-solid fa-caret-down"></i></button>
+                            <div class="content"> <!--Contenido oculto-->
+                            <form action="/change-password" method="post" id="form_psswd"> <!--Formulario para cambiar contraseña-->
+                                <p>Nueva contraseña:&nbsp; <input type="password" name="new-password" id="new_psw" size="10"><br>
+                                Verificación de nueva contraseña:<input type="password" name="verif-password" id="verif_psw" size="10"></p>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Modificar contraseña
+                                </button>
+                                <div id="message1">
+                                <span>Las contraseñas introducidas no coinciden</span>
+                                </div>
+                                <div id="message2">
+                                <span>Las contraseñas introducidas coinciden</span>
+                                </div>
+                            </form>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <canvas id="myChart"></canvas><br> <!--Gráfico para mostrar 1er gráfico (Películas y series totales)-->
+                <canvas id="myChart2"></canvas> <!--Gráfico para mostrar 2º gráfico (Películas / series según géneros)-->
+            </div>
+        </div>
+
+    </main>
+
+<!--Función para ocultar / mostrar contraseña en función de un botón-->
+<script>
+function myFunction() {
+  var x = document.getElementById("myInput");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
+
+<!--Función para ocultar / mostrar contenido en función de un botón-->
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+<!--Función para mostrar mensajes según coincidencia de las contraseñas-->
+<script>
+var firstInput = document.getElementById("new_psw");
+var secondInput = document.getElementById("verif_psw");
+
+// When both inputs are equal the message is shown
+secondInput.onkeyup = function() {
+  // Validate password
+  var validation = secondInput.value;
+  if(firstInput.value == validation) {
+    document.getElementById("message1").style.display = "none";
+    document.getElementById("message2").style.display = "block";
+  }else{
+    document.getElementById("message1").style.display = "block";
+    document.getElementById("message2").style.display = "none";}
+
+  if(secondInput.value == "") {
+    document.getElementById("message1").style.display = "none";
+    document.getElementById("message2").style.display = "none";}
+
+  }
+</script>
+
+<!--Configuración del gráfico myChart-->
+<script>
+const xValues = ["Películas", "Series"];
+const yValues = [{{movies_total}}, {{shows_total}}];
+const barColors = ["red","blue"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    plugins: {
+        legend: {display: false},
+        title: {
+            display: true,
+            text: "Películas y series vistas"
+        }
+    },
+    scales: {
+        y: {
+         ticks: {
+            precision: 0
+         },
+         min: 0,
+         title: {
+                display: true,
+                align: 'center',
+                text: 'Nº de películas y series',
+                color: 'black',}
+         }
+    }
+  }
+});
+</script>
+
+<!--Configuración del gráfico myChart2-->
+<script>
+const xVal = [{% for x in genres %}"{{x}}",{% endfor %}];
+const yVal = [{% for d in genres_count %}{{d}},{% endfor %}];
+
+new Chart("myChart2", {
+  type: "bar",
+  data: {
+    labels: xVal,
+    datasets: [{
+      data: yVal
+    }]
+  },
+  options: {
+    plugins: {
+        legend: {display: false},
+        title: {
+            display: true,
+            text: "Películas y series vistas según género"
+        }
+    },
+    scales: {
+        y: {
+         ticks: {
+            precision: 0
+         },
+         min: 0,
+         title: {
+                display: true,
+                align: 'center',
+                text: 'Nº de películas y series',
+                color: 'black',}
+         }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

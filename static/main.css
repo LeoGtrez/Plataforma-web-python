@@ -1,0 +1,342 @@
+body {
+    background: #ff4b1f;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1fddff, #ff4b1f);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1fddff, #ff4b1f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.titulo{ /* Propiedades del titulo */
+    font-family: 'Permanent Marker';
+    }
+
+.center { /* Propiedades del div "center" */
+  text-align: center;
+}
+
+.pagination { /* Propiedades del div "pagination" */
+  display: flex;
+  justify-content: center;
+}
+
+ /* Pagination links */
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid  #17202a;
+  margin: 0 4px;
+}
+
+/* Style the active/current link */
+.pagination a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+/* Add a grey background color on mouse-over */
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #000000;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  z-index: 100;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 15px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #f9492e;
+  color: white;
+}
+
+/* Propiedades de div "right-corner" dentro de "topnav" */
+.topnav .right-corner {
+  float: right;}
+
+/* Style the search box inside the navigation bar */
+.topnav .search-container {
+  float: left;
+}
+
+/* Propiedades de "input" dentro de "topnav" */
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 12px;
+  border: none;
+}
+
+/*Propiedades de botón del buscador */
+.topnav .search-container button {
+  float: right;
+  padding: 6px 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Propiedades del botón del buscador cuando se pasa el cursor por encima */
+.topnav .search-container button:hover {
+  background: #ccc;
+}
+
+/* Propiedades del div "user-button" dentro del "topnav" */
+.topnav .user-button{
+  float: right;
+}
+
+/* Propiedades del botón "user-button" dentro del "topnav" */
+.topnav .user-button button{
+  float: right;
+  width: 40px;
+  height: 40px;
+  padding: 6px 6px;
+  margin-top: 4px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;}
+
+/*Propiedades del botón "user-button" al pasar el cursor por encima */
+.topnav .user-button button:hover {
+  background:  #abebc6;
+}
+
+/*Propiedades de "topnav2" */
+.topnav2 {
+  background-color: #808080;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 54; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  z-index: 100;
+}
+
+/* Propiedades del contenido de "topnav2" */
+.topnav2 a {
+  float: left;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 6px 10px;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+/* Change the color of links on hover */
+.topnav2 a:hover {
+  background-color: #fdfefe;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav2 a.active {
+  background-color: #DFFF00;
+  color: black;
+}
+
+/* Propiedades del "button1" */
+.button1 {
+    font-size: 12px;
+    background-color: #00dad9;
+    color: black;
+    width: 40%;
+    border-radius: 4px;
+    margin: 5px;
+    padding: 4px 4px;
+    }
+
+/* Propiedades del "button2" */
+.button2 {
+    font-size: 12px;
+    background-color: #f9492e;
+    color: white;
+    width: 40%;
+    border-radius: 4px;
+    margin: 5px;
+    padding: 4px 4px;
+    }
+
+/* Propiedades del "button-visto" */
+.button-visto {
+    font-size: 12px;
+    background-color: #f3f70e;
+    color: black;
+    width: 40%;
+    border-radius: 4px;
+    margin: 5px;
+    padding: 4px 4px;
+    }
+
+/* Propiedades del "button-fav" */
+.button-fav {
+    font-size: 12px;
+    background-color: #8987fa;
+    color: white;
+    width: 40%;
+    border-radius: 4px;
+    margin: 5px;
+    padding: 4px 4px;
+    }
+
+/* Propiedades del "button-eye" */
+.button-eye{
+    font-size: 18px;
+    background-color: #ff7979;
+    padding: 4px 4px;
+    border-radius: 4px;}
+
+/* Propiedades de div "card_col" */
+.card_col {
+    width: 350px;
+    height: 730px;
+    font-size: 11px;
+    padding: 2px 2px;}
+
+/* Propiedades de div "card_col2" */
+.card_col2 {
+    width: 350px;
+    height: 700px;
+    font-size: 11px;
+    padding: 2px 2px;}
+
+/* Propiedades de div "card_admin" */
+.card_admin {
+    width: 440px;
+    font-size: 14px;
+    padding: 2px 2px;}
+
+/* Propiedades de div "card_admin_pelis" */
+.card_admin_pelis {
+    height: 600px;
+    font-size: 14px;
+    padding: 2px 2px;
+    overflow:hidden;}
+
+/* Propiedades de div "card_body_pelis" */
+.card_body_pelis {
+    overflow-y:scroll;}
+
+/* Propiedades de div "myblock1" */
+.myblock1{
+    text-align:left;
+}
+
+/* Propiedades de div "myblock2" */
+.myblock2{
+    text-align:left;
+    display: inline-block;
+}
+
+/* Propiedades de div "icon" */
+.icon{
+    font-size: 18px;}
+
+/* Propiedades de div "ul" dentro de "nav" */
+nav ul{
+    overflow:hidden;
+    overflow-y:scroll;}
+
+/* Propiedades de div "collapsible" */
+.collapsible {
+  background-color: #00dad9;
+  color: black;
+  cursor: pointer;
+  padding: 8px;
+  width: 65%;
+  text-align: center;
+  outline: none;
+  font-size: 15px;
+  border-radius: 4px;
+}
+
+/* Propiedades de div "collapsible" al pasar cursor por encima */
+.active, .collapsible:hover {
+  background-color: #ff7979;
+  color: white;
+}
+
+/* Propiedades de div "content" */
+.content {
+  padding: 8px 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+/* Propiedades de div "message1" */
+#message1 {
+  display:none;
+  background: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 2px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+/* Propiedades del span dentro de "message1" */
+#message1 span {
+  padding: 6px 10px;
+  font-size: 12px;
+  color: red;
+}
+
+/* Propiedades de div "message2" */
+#message2 {
+  display:none;
+  background: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 2px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+/* Propiedades del span dentro de "message2" */
+#message2 span {
+  padding: 6px 10px;
+  font-size: 12px;
+  color: green;
+}
+
+/* Propiedades de input "form_psswd" */
+#form_psswd {
+  margin-bottom: 0px;}
+
+/* Propiedades de gráfico "myChart" */
+#myChart{
+  background-color: #f7f8f7;
+  border-radius: 4px;}
+
+/* Propiedades de gráfico "myChart2" */
+#myChart2{
+  background-color: #f7f8f7;
+  border-radius: 4px;}
+
+/* Propiedades de gráfico "ComparisonChart" */
+#ComparisonChart{
+  background-color: #f7f8f7;
+  border-radius: 4px;}

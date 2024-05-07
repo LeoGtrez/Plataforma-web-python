@@ -1,0 +1,177 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Servicio de Streaming</title>
+    <!--Hoja de estilo local-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <!--Plantilla de bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/journal/bootstrap.min.css" integrity="sha384-QDSPDoVOoSWz2ypaRUidLmLYl4RyoBWI44iA5agn6jHegBxZkNqgm2eHb6yZ5bYs" crossorigin="anonymous">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Iconos de Font Awesome-->
+    <script src="https://kit.fontawesome.com/ec8a26d722.js" crossorigin="anonymous"></script>
+    <!--Javascript-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+ <div class="topnav"> <!--Div para la barra de navegación superior-->
+  <!--Links para cada sección-->
+  <a href="/peliculas1">Películas</a>
+  <a href="/series1">Series</a>
+  <a href="/vistas">Vistas</a>
+  <a href="/favoritas">Favoritas</a>
+  {% if admin==True %} <!--Si admin=True se muestra la sección de administrador-->
+     <a href="/admin">Administrador</a>
+  {% endif %}
+  <!--Buscador y botón para redirigir a la página de usuario-->
+  <div class="right-corner">
+  <div class="search-container">
+    <form action="/search" method="post">
+      <input type="text" placeholder="Search.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+  <div class="user-button">
+  <form action="/user_page" method="post">
+    <button type="submit"><i class="fa-solid fa-user-tie"></i></button>
+  </form>
+  </div>
+  </div>
+</div>
+
+<body>
+    <main class="container p-4">
+        <br>
+        <h3 class="display-4 text-left mt-4 titulo">Películas que contienen "{{srch_w}}"</h3> <!--Título principal-->
+        <br>
+        {% if pelis_buscadas == [] %} <!--Si la lista pelis_buscadas está vacía se muestra mensaje-->
+            <h1 class="display-4 text-left mt-4">No hay ninguna película que coincida con la búsqueda</h1>
+            <br>
+        {% else %}
+            <div class="card-columns" >
+            {% for movies in pelis_buscadas %} <!--Si hay elementos en la lista, se muestran como "card-columns"-->
+                <div class="card bg-dark text-light card_col">
+                    <img class="card-img-top" src={{movies.link}} alt={{movies.title}}>
+                <div class="card-body text-center">
+                <p class="card-text">{{movies.title}} ({{movies.year}})</p>
+                <p class="card-text"> Director: {{movies.director}} </p>
+                <p class="card-text"> Género: {{movies.genre}} </p>
+
+                {% if movies.id in id_movies_v %} <!--Se comprueba si es una pelicula vista o no, para mostrar botón acorde-->
+                    <form>
+                    <button class="float-left button-visto" formaction="/pelicula-no-vista/{{movies.id}}">
+                    <i class="fa-solid fa-eye"></i>
+                    Ya marcada como vista
+                    </button>
+                    </form>
+                {% else %}
+                    <form>
+                    <button class="float-left button1" formaction="/pelicula-vista/{{movies.id}}">
+                    <i class="fa-solid fa-eye"></i>
+                    Marcar como vista
+                    </button>
+                    </form>
+                {% endif %}
+
+                {% if movies.id in id_movies_f %} <!--Se comprueba si es una pelicula favorita o no, para mostrar botón acorde-->
+                    <form>
+                    <button class="float-right button-fav" formaction="/pelicula-no-fav/{{movies.id}}">
+                    <i class="fa-solid fa-heart-circle-plus"></i>
+                    Ya marcada como favorita
+                    </button>
+                    </form>
+                {% else %}
+                    <form>
+                    <button class="float-right button2" formaction="/pelicula-fav/{{movies.id}}">
+                    <i class="fa-solid fa-heart-circle-plus"></i>
+                    Marcar como favorita
+                    </button>
+                    </form>
+                {% endif %}
+
+                </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </main>
+<main class="container p-4">
+        <h3 class="display-4 text-left mt-4 titulo">Series que contienen "{{srch_w}}"</h3> <!--Título principal-->
+        <br>
+        {% if series_buscadas == [] %} <!--Si la lista series_buscadas está vacía se muestra mensaje-->
+            <h1 class="display-4 text-left mt-4">No hay ninguna serie que coincida con la búsqueda</h1>
+            <br>
+        {% else %}
+            <div class="card-columns" >
+            {% for shows in series_buscadas %} <!--Si hay elementos en la lista, se muestran como "card-columns"-->
+                <div class="card bg-dark text-light card_col">
+                    <img class="card-img-top" src={{shows.link}} alt={{shows.title}}>
+                <div class="card-body text-center">
+                <p class="card-text">{{shows.title}} ({{shows.year}})</p>
+                <p class="card-text"> Temporadas: {{shows.seasons}} </p>
+                <p class="card-text"> Género: {{shows.genre}} </p>
+
+                {% if shows.id in id_shows_v %} <!--Se comprueba si es una serie vista o no, para mostrar botón acorde-->
+                    <form>
+                    <button class="float-left button-visto" formaction="/serie-no-vista/{{shows.id}}">
+                    <i class="fa-solid fa-eye"></i>
+                    Ya marcada como vista
+                    </button>
+                    </form>
+                {% else %}
+                    <form>
+                    <button class="float-left button1" formaction="/serie-vista/{{shows.id}}">
+                    <i class="fa-solid fa-eye"></i>
+                    Marcar como vista
+                    </button>
+                    </form>
+
+                {% endif %}
+
+                {%if shows.id in id_shows_f %} <!--Se comprueba si es una serie favorita o no, para mostrar botón acorde-->
+                    <form>
+                    <button class="float-right button-fav" formaction="/serie-no-fav/{{shows.id}}">
+                    <i class="fa-solid fa-heart-circle-plus"></i>
+                    Ya marcada como favorita
+                    </button>
+                    </form>
+                {% else %}
+                    <form>
+                    <button class="float-right button2" formaction="/serie-fav/{{shows.id}}">
+                    <i class="fa-solid fa-heart-circle-plus"></i>
+                    Marcar como favorita
+                    </button>
+                    </form>
+                {% endif %}
+
+                </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </main>
+
+    <!--Funcionalidad para guardar posición de scroll al cargar páginas-->
+    <script>
+        // Save scroll position when page refreshes
+        $(document).ready(function() {
+            $(window).on('beforeunload', function() {
+                localStorage.setItem('scrollPosition', $(window).scrollTop());
+            });
+
+            // Restore scroll position on page load
+            var scrollPosition = localStorage.getItem('scrollPosition');
+            if (scrollPosition !== null) {
+                $(window).scrollTop(scrollPosition);
+                localStorage.removeItem('scrollPosition'); // Clear after restoring
+            }
+        });
+    </script>
+</body>
+</html>

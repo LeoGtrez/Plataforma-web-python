@@ -1,0 +1,156 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Servicio de Streaming</title>
+    <!--Hoja de estilo local-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <!--Plantilla de bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/journal/bootstrap.min.css" integrity="sha384-QDSPDoVOoSWz2ypaRUidLmLYl4RyoBWI44iA5agn6jHegBxZkNqgm2eHb6yZ5bYs" crossorigin="anonymous">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Iconos de Font Awesome-->
+    <script src="https://kit.fontawesome.com/ec8a26d722.js" crossorigin="anonymous"></script>
+    <!--Javascript-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<div class="topnav"> <!--Div para la barra de navegación superior-->
+  <!--Links para cada sección-->
+  <a class="active" href="/peliculas1">Películas</a>
+  <a href="/series1">Series</a>
+  <a href="/vistas">Vistas</a>
+  <a href="/favoritas">Favoritas</a>
+  {% if admin==True %} <!--Si admin=True se muestra la sección de administrador-->
+     <a href="/admin">Administrador</a>
+  {% endif %}
+  <!--Buscador y botón para redirigir a la página de usuario-->
+  <div class="right-corner">
+  <div class="search-container">
+    <form action="/search" method="post">
+      <input type="text" placeholder="Search.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+  <div class="user-button">
+  <form action="/user_page" method="post">
+    <button type="submit"><i class="fa-solid fa-user-tie"></i></button>
+  </form>
+  </div>
+  </div>
+
+</div>
+
+<body>
+    <main class="container p-4">
+        <br>
+        <h3 class="display-4 text-left mt-4 titulo">Catálogo de películas</h3> <!--Título principal-->
+        <br>
+
+        <div class="center"> <!--Centrado-->
+            <div class="pagination"> <!--Menú superior de numeración / enlaces de páginas-->
+              <a href="{% if pg==1 %} # {% else %} /peliculas{{pg-1}} {% endif %}">&laquo;</a>
+              <a class="{% if pg == 1 %} active {% endif %}" href="/peliculas1">1</a>
+              <a class="{% if pg == 2 %} active {% endif %}" href="/peliculas2">2</a>
+              <a class="{% if pg == 3 %} active {% endif %}" href="/peliculas3">3</a>
+              <a class="{% if pg == 4 %} active {% endif %}" href="/peliculas4">4</a>
+              <a class="{% if pg == 5 %} active {% endif %}" href="/peliculas5">5</a>
+              <a class="{% if pg == 6 %} active {% endif %}" href="/peliculas6">6</a>
+              <a class="{% if pg == 7 %} active {% endif %}" href="/peliculas7">7</a>
+              <a class="{% if pg == 8 %} active {% endif %}" href="/peliculas8">8</a>
+              <a class="{% if pg == 9 %} active {% endif %}" href="/peliculas9">9</a>
+              <a class="{% if pg == 10 %} active {% endif %}" href="/peliculas10">10</a>
+              <a href="{% if pg==10 %} # {% else %} /peliculas{{pg+1}} {% endif %}">&raquo;</a>
+            </div>
+        </div>
+        <br>
+
+        <div class="card-columns" >
+        {% for movies in lista_de_pelis %} <!--Para cada Película se muestra la info y imagen-->
+            <div class="card bg-dark text-light card_col">
+                <img class="card-img-top" src={{movies.link}} alt={{movies.title}}>
+            <div class="card-body text-center">
+            <h6 class="card-text">{{movies.title}} ({{movies.year}})</h6>
+            <p class="card-text"> Director: {{movies.director}} </p>
+            <p class="card-text"> Duración: {{movies.runtime}} </p>
+            <p class="card-text"> Género: {{movies.genre}} </p>
+
+            {% if movies.id in id_int %} <!--Se comprueba si es una pelicula vista o no, para mostrar botón acorde-->
+                <form>
+                <button class="float-left button-visto" formaction="/pelicula-no-vista/{{movies.id}}">
+                <i class="fa-solid fa-eye"></i>
+                Ya marcada como vista
+                </button>
+                </form>
+            {% else %}
+                <form>
+                <button class="float-left button1" formaction="/pelicula-vista/{{movies.id}}">
+                <i class="fa-solid fa-eye"></i>
+                Marcar como vista
+                </button>
+                </form>
+
+            {% endif %}
+            {% if movies.id in id_fav %} <!--Se comprueba si es una pelicula favorita o no, para mostrar botón acorde-->
+                <form>
+                <button class="float-right button-fav" formaction="/pelicula-no-fav/{{movies.id}}">
+                <i class="fa-solid fa-heart-circle-plus"></i>
+                Ya marcada como favorita
+                </button>
+                </form>
+            {% else %}
+                <form>
+                <button class="float-right button2" formaction="/pelicula-fav/{{movies.id}}">
+                <i class="fa-solid fa-heart-circle-plus"></i>
+                Marcar como favorita
+                </button>
+                </form>
+            {% endif %}
+            </div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <div class="center"> <!--Centrado-->
+            <div class="pagination"> <!--Menú inferior de numeración / enlaces de páginas-->
+              <a href="{% if pg==1 %} # {% else %} /peliculas{{pg-1}} {% endif %}">&laquo;</a>
+              <a class="{% if pg == 1 %} active {% endif %}" href="/peliculas1">1</a>
+              <a class="{% if pg == 2 %} active {% endif %}" href="/peliculas2">2</a>
+              <a class="{% if pg == 3 %} active {% endif %}" href="/peliculas3">3</a>
+              <a class="{% if pg == 4 %} active {% endif %}" href="/peliculas4">4</a>
+              <a class="{% if pg == 5 %} active {% endif %}" href="/peliculas5">5</a>
+              <a class="{% if pg == 6 %} active {% endif %}" href="/peliculas6">6</a>
+              <a class="{% if pg == 7 %} active {% endif %}" href="/peliculas7">7</a>
+              <a class="{% if pg == 8 %} active {% endif %}" href="/peliculas8">8</a>
+              <a class="{% if pg == 9 %} active {% endif %}" href="/peliculas9">9</a>
+              <a class="{% if pg == 10 %} active {% endif %}" href="/peliculas10">10</a>
+              <a href="{% if pg==10 %} # {% else %} /peliculas{{pg+1}} {% endif %}">&raquo;</a>
+            </div>
+        </div>
+
+    </main>
+
+    <!--Funcionalidad para guardar posición de scroll al cargar páginas-->
+    <script>
+        // Save scroll position when page refreshes
+        $(document).ready(function() {
+            $(window).on('beforeunload', function() {
+                localStorage.setItem('scrollPosition', $(window).scrollTop());
+            });
+
+            // Restore scroll position on page load
+            var scrollPosition = localStorage.getItem('scrollPosition');
+            if (scrollPosition !== null) {
+                $(window).scrollTop(scrollPosition);
+                localStorage.removeItem('scrollPosition'); // Clear after restoring
+            }
+        });
+    </script>
+</body>
+</html>
